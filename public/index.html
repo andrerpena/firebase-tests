@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
+    <script>
+      // Initialize Firebase
+      var config = {
+        apiKey: "AIzaSyBJgN1LV0Yni128mUBoNIYlZ6qbpJGFh8I",
+        authDomain: "estibuddy.firebaseapp.com",
+        databaseURL: "https://estibuddy.firebaseio.com",
+        storageBucket: "estibuddy.appspot.com"
+      };
+      firebase.initializeApp(config);
+
+      window.signin = function() {
+          var provider = new firebase.auth.GoogleAuthProvider();
+          firebase.auth().signInWithPopup(provider).then(function(result) {
+              // This gives you a Google Access Token. You can use it to access the Google API.
+              var token = result.credential.accessToken;
+              console.log(token);
+              // The signed-in user info.
+              var user = result.user;
+              console.log(user);
+              // ...
+          }).catch(function(error) {
+              // Handle Errors here.
+              var errorCode = error.code;
+              var errorMessage = error.message;
+              // The email of the user's account used.
+              var email = error.email;
+              // The firebase.auth.AuthCredential type that was used.
+              var credential = error.credential;
+              // ...
+          });
+      };
+
+      window.signoff = function() {
+          firebase.auth().signOut().then(function() {
+              console.log('signed off');
+          }, function(error) {
+              console.log('could not sign off');
+          });
+      }
+
+      window.writeData = function() {
+          firebase.database().ref('random').set({
+              fuck: 'yes'
+          });
+      }
+
+    </script>
+  </head>
+  <body>
+    <div>
+        <button onclick="window.signin()">Sign-in</button>
+        <button onclick="window.signoff()">Sign-off</button>
+        <button onclick="window.writeData()">Write data</button>
+    </div>
+  </body>
+</html>
